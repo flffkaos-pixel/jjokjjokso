@@ -506,7 +506,7 @@ table.data tr:last-child td { border-bottom: 0; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: #0B0E12; color: #9AA4AF; padding: 54px 0 40px; margin-top: 0; font-size: 14px; border-top: 3px solid var(--accent); }
-.site-footer .container { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 34px; }
+.site-footer .container { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 34px; }
 .site-footer h4 { color: #fff; font-family: var(--font-sans); font-size: 13px; letter-spacing: .1em; margin-bottom: 14px; }
 .site-footer a { color: #C7CED6; display: block; padding: 4px 0; }
 .site-footer a:hover { color: var(--accent-2); }
