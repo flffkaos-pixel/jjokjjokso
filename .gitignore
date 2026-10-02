@@ -10,3 +10,6 @@ Desktop.ini
 # 임시/로그
 *.log
 *.tmp
+
+# wrangler 로컬 캐시
+.wrangler/
