@@ -12,6 +12,7 @@
 consumer-record/
 ├── index.html            # 메인 (통계 + 제보 목록/검색/필터)
 ├── report.html           # 3단계 제보 작성 (증거 업로드)
+├── subjects.html         # 제보 대상 등록 · 검색
 ├── post.html             # 제보 상세 (증거 갤러리, 검증 타임라인, 반론, 댓글)
 ├── rules.html            # 검증 기준 / 증거 기준 / 반론권 / 면책
 ├── admin.html            # 관리자 로그인 + 검증 대시보드
@@ -30,16 +31,15 @@ consumer-record/
 
 ## 1. Supabase 설정
 
-> **이미 완료됨 (기존 프로젝트 재사용)**: `assets/js/config.js` 에는 기존 BLACKCONSUMER 프로젝트
-> (`lmwywpgpcxgvfoiieumu.supabase.co`, 블랙아카이브) 정보가 들어가 있습니다.
-> 남은 작업은 **SQL Editor 에 `supabase/schema.sql` 1회 실행**뿐입니다.
-> (기존 `reports`/`report_flags` 테이블과 충돌 없이 공존합니다. 새 프로젝트를 따로 쓰려면
-> 아래 1-1 단계대로 새로 만들고 `config.js` 만 교체하세요.)
+> **진행 상태**: `assets/js/config.js` 는 새 프로젝트 `nfvdhqcscfvovcjgmaba` 에 연결됨.
+> `supabase/schema.sql`(테이블·함수) · `supabase/storage.sql`(증거 버킷) 실행 완료.
+> 남은 SQL: **`supabase/subjects.sql` 1회 실행** (제보 대상 등록 테이블).
 
 
 1. [supabase.com](https://supabase.com) 에서 **New project** 생성 (Free tier).
 2. 좌측 **SQL Editor** → `supabase/schema.sql` **전체를 붙여넣고 Run**.
    - 테이블, RLS 정책, 상태 이력 트리거, 증거 스토리지(`evidence` bucket)가 자동 생성됩니다.
+   - 이어서 `supabase/storage.sql`, `supabase/subjects.sql` 도 각각 Run 합니다.
 3. **Authentication → Users → Add user** 로 관리자 계정(이메일/비밀번호)을 만듭니다.
 4. SQL Editor로 관리자 등록 (3에서 만든 user_id 사용):
 

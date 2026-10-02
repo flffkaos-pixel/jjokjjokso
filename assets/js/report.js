@@ -1,6 +1,6 @@
 import { db, isConfigured } from "./db.js";
 import {
-  $, $$, CATEGORIES, REGIONS, esc, fmtBytes, toast, copyText, setupPage,
+  $, $$, CATEGORIES, REGIONS, esc, fmtBytes, toast, copyText, setupPage, qs,
 } from "./app.js";
 
 setupPage();
@@ -15,6 +15,30 @@ CATEGORIES.forEach((c) =>
   $("#category").insertAdjacentHTML("beforeend", `<option value="${esc(c)}">${esc(c)}</option>`));
 REGIONS.forEach((r) =>
   $("#region").insertAdjacentHTML("beforeend", `<option value="${esc(r)}">${esc(r)}</option>`));
+
+/* ---------- 등록된 대상 자동완성 + URL 프리필 ---------- */
+async function loadSubjectOptions() {
+  try {
+    const { data, error } = await db.from("subjects").select("name").limit(500);
+    if (error) throw error;
+    const seen = new Set();
+    const opts = [];
+    (data || []).forEach((r) => {
+      const n = r.name.trim();
+      if (!seen.has(n.toLowerCase())) { seen.add(n.toLowerCase()); opts.push(`<option value="${esc(n)}"></option>`); }
+    });
+    $("#subject-options").innerHTML = opts.join("");
+  } catch (_) { /* 테이블 미실행 상태 — 무시 */ }
+}
+if (isConfigured()) loadSubjectOptions();
+
+const preSubject = qs("subject");
+const preKind = qs("kind");
+if (preSubject) $("#subject").value = preSubject;
+if (preKind === "company" || preKind === "store") {
+  const radio = $(`input[name=kind][value=${preKind}]`);
+  if (radio) radio.checked = true;
+}
 
 /* ---------- 증거 렌더 ---------- */
 function renderFiles() {
@@ -233,6 +257,15 @@ $("#report-form").addEventListener("submit", async (e) => {
       const { error: eErr } = await db.from("evidence").insert(evRows);
       if (eErr) throw eErr;
     }
+
+    // 제보 대상 자동 등록 (테이블 미실행 상태면 조용히 건너뜀)
+    const { error: sErr } = await db.rpc("register_subject", {
+      p_name: payload.subject,
+      p_kind: payload.kind,
+      p_category: payload.category,
+      p_region: payload.region,
+    });
+    if (sErr) console.warn("대상 자동 등록 생략:", sErr.message);
 
     setStatus(100, "완료되었습니다.");
 

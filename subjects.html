@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>제보 대상 등록 · 찾기 — 좆좌소</title>
+  <meta name="description" content="누구나 기업·매장을 제보 대상으로 등록할 수 있습니다. 등록된 대상 목록을 검색하고 바로 제보로 연결하세요." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://jjokjjokso.pages.dev/subjects" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="좆좌소" />
+  <meta property="og:title" content="제보 대상 등록 · 찾기 — 좆좌소" />
+  <meta property="og:description" content="누구나 기업·매장을 제보 대상으로 등록할 수 있습니다. 등록된 대상 목록을 검색하고 바로 제보로 연결하세요." />
+  <meta property="og:url" content="https://jjokjjokso.pages.dev/subjects" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="좆좆소 — 증거로 남기는 기업·매장 제보" />
+  <meta name="twitter:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="google-site-verification" content="5m9WrjHo6HZ1aRzDjKvDEtLsv1Egv2K2yi-clQ1WHfk" />
+  <meta name="naver-site-verification" content="985014f4ac67680cdea4dbd3395ad557fc22dca1" />
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://jjokjjokso.pages.dev/"},{"@type":"ListItem","position":2,"name":"제보 대상 등록","item":"https://jjokjjokso.pages.dev/subjects"}]}
+  </script>
+</head>
+<body data-page="subjects">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JJ</span>
+        <span><span class="brand-name">좆좌소</span><span class="brand-sub">JJOKJJOKSO</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" data-nav="home">제보 목록</a>
+        <a href="rules.html" data-nav="rules">검증 기준</a>
+        <a href="subjects.html" data-nav="subjects">대상 등록</a>
+        <a href="admin.html" data-nav="admin">관리자</a>
+        <a href="https://blackconsumer.vercel.app/">블랙컨슈머</a>
+        <a href="report.html" class="btn btn-accent btn-sm" data-nav="report">제보하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container-narrow">
+        <div class="breadcrumbs"><a href="index.html">홈</a> <span>›</span> <span>제보 대상</span></div>
+        <h1>제보 대상 등록</h1>
+        <p>다니는 곳, 자주 이용하는 매장 — 아무 기업·매장이나 등록할 수 있습니다. 등록은 대상 정보만 담으며, 제보는 별도로 검증된 후 공개됩니다.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:38px">
+      <div class="container-narrow">
+
+        <!-- 등록 폼 -->
+        <form class="card card-pad" id="subject-form" novalidate style="margin-bottom:34px">
+          <h2 style="font-size:19px; margin:0 0 18px">새 대상 등록</h2>
+
+          <div class="field">
+            <label class="field-label">구분<span class="req">*</span></label>
+            <div class="radio-row">
+              <label class="radio-pill"><input type="radio" name="kind" value="company" checked /><span>기업 · 사업자</span></label>
+              <label class="radio-pill"><input type="radio" name="kind" value="store" /><span>매장 · 점포</span></label>
+            </div>
+          </div>
+
+          <div class="field" id="f-name">
+            <label class="field-label" for="s-name">대상명 (회사명 / 매장명)<span class="req">*</span></label>
+            <input class="input" id="s-name" placeholder="예) (주)예시상사, 강남동 예시카페" maxlength="120" />
+            <div class="field-help">중복 등록은 자동으로 하나만 남습니다. 특수문자보다 정식 명칭을 권장합니다.</div>
+            <div class="field-error">대상명을 2자 이상 입력해 주세요.</div>
+          </div>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap">
+            <div class="field" style="flex:1; min-width:200px">
+              <label class="field-label" for="s-category">유형 (선택)</label>
+              <select class="select" id="s-category" style="width:100%"></select>
+            </div>
+            <div class="field" style="flex:1; min-width:200px">
+              <label class="field-label" for="s-region">지역 (선택)</label>
+              <select class="select" id="s-region" style="width:100%"></select>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
+            <button class="btn btn-primary" type="submit" id="btn-register">대상 등록하기</button>
+            <span class="small muted">등록 후 바로 <a href="report.html">제보 작성</a>으로 이어집니다.</span>
+          </div>
+        </form>
+
+        <!-- 검색 + 목록 -->
+        <div class="head-block" style="margin-bottom:16px">
+          <span class="head-index">LIST</span>
+          <h2>등록된 대상</h2>
+          <p>검색해서 내 회사·매장이 이미 있는지 확인하세요.</p>
+        </div>
+
+        <div class="search-bar2" style="margin-bottom:20px">
+          <input type="search" id="s-q" placeholder="대상명 검색" aria-label="대상명 검색" />
+        </div>
+
+        <div class="subject-grid" id="subject-list">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+
+        <p class="small muted center" id="s-count" style="margin-top:16px"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <div class="footer-brand"><span class="brand-mark">JJ</span> 좆좌소</div>
+        <p class="footer-note">대상 등록은 정보 등록일 뿐이며, 비방·허위 내용은 등록 자체로 공개되지 않습니다. 공개 제보는 증거 검증 후에만 목록에 표시됩니다.</p>
+      </div>
+      <div>
+        <h4>바로가기</h4>
+        <a href="report.html">제보 작성</a>
+        <a href="subjects.html">대상 등록</a>
+        <a href="rules.html">검증 기준</a>
+        <a href="index.html">제보 목록</a>
+      </div>
+      <div>
+        <h4>정책</h4>
+        <a href="rules.html#evidence">증거 기준</a>
+        <a href="rules.html#rebuttal">반론권 정책</a>
+        <a href="rules.html#disclaimer">면책 조항</a>
+      </div>
+      <div>
+        <h4>관련 사이트</h4>
+        <a href="https://blackconsumer.vercel.app/">블랙컨슈머 (BLACKARCHIVE)</a>
+        <p class="footer-note">이름·연락처·차량번호·인상착의로 검색하는 블랙컨슈머 제보 아카이브</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">© <span id="year"></span> 좆좌소 (JJOKJJOKSO)</div>
+  </footer>
+
+  <script type="module" src="assets/js/subjects.js"></script>
+</body>
+</html>
