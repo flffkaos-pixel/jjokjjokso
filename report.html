@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>제보 작성 — 좆좆소</title>
+  <meta name="description" content="기업·매장 제보 작성. 증거 1건 이상 필수, 접수 후 검증 절차를 거쳐 공개됩니다." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://YOUR-SITE.pages.dev/report.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="좆좆소" />
+  <meta property="og:title" content="제보 작성 — 좆좆소" />
+  <meta property="og:description" content="기업·매장 제보 작성. 증거 1건 이상 필수, 접수 후 검증 절차를 거쳐 공개됩니다." />
+  <meta property="og:url" content="https://YOUR-SITE.pages.dev/report.html" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="google-site-verification" content="5m9WrjHo6HZ1aRzDjKvDEtLsv1Egv2K2yi-clQ1WHfk" />
+  <meta name="naver-site-verification" content="985014f4ac67680cdea4dbd3395ad557fc22dca1" />
+</head>
+<body data-page="report">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JJ</span>
+        <span><span class="brand-name">좆좆소</span><span class="brand-sub">JJOKJJOKSO</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" data-nav="home">제보 목록</a>
+        <a href="rules.html" data-nav="rules">검증 기준</a>
+        <a href="admin.html" data-nav="admin">관리자</a>
+        <a href="report.html" class="btn btn-accent btn-sm" data-nav="report">제보하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container-narrow">
+        <div class="breadcrumbs"><a href="index.html">홈</a> <span>›</span> <span>제보 작성</span></div>
+        <h1>제보 작성</h1>
+        <p>증거 1건 이상이어야 접수됩니다. 검증 전까지 공개되지 않으며, 제출 후 접수번호로 진행 상황을 확인할 수 있습니다.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:38px">
+      <div class="container-narrow">
+
+        <div class="steps" id="steps">
+          <div class="step is-active" data-step="1"><div class="step-bar"></div><div class="step-label">1. 기본 정보</div></div>
+          <div class="step" data-step="2"><div class="step-bar"></div><div class="step-label">2. 내용 · 증거</div></div>
+          <div class="step" data-step="3"><div class="step-bar"></div><div class="step-label">3. 확인 · 제출</div></div>
+        </div>
+
+        <form class="card card-pad" id="report-form" novalidate>
+          <!-- STEP 1 -->
+          <div data-panel="1">
+            <div class="field">
+              <label class="field-label">구분<span class="req">*</span></label>
+              <div class="radio-row">
+                <label class="radio-pill"><input type="radio" name="kind" value="company" checked /><span>기업 · 사업자</span></label>
+                <label class="radio-pill"><input type="radio" name="kind" value="store" /><span>매장 · 점포</span></label>
+              </div>
+            </div>
+
+            <div class="field" id="f-subject">
+              <label class="field-label" for="subject">대상명 (회사명 / 매장명)<span class="req">*</span></label>
+              <input class="input" id="subject" placeholder="예) (주)예시상사, 강남동 예시카페" maxlength="120" />
+              <div class="field-error">대상명을 2자 이상 입력해 주세요.</div>
+            </div>
+
+            <div class="field" id="f-title">
+              <label class="field-label" for="title">제목<span class="req">*</span></label>
+              <input class="input" id="title" placeholder="예) 결제 후 환불을 3개월째 거부하고 있습니다" maxlength="140" />
+              <div class="field-error">제목을 5자 이상 입력해 주세요.</div>
+            </div>
+
+            <div class="field" id="f-category">
+              <label class="field-label" for="category">유형<span class="req">*</span></label>
+              <select class="select" id="category" style="width:100%"></select>
+              <div class="field-error">유형을 선택해 주세요.</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="region">지역</label>
+              <select class="select" id="region" style="width:100%"></select>
+              <div class="field-help">온라인 거래·전국 사업자는 '전국/온라인'을 선택하세요.</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="occurred">발생일 (알면 선택)</label>
+              <input class="input" type="date" id="occurred" />
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div data-panel="2" class="hidden">
+            <div class="field" id="f-body">
+              <label class="field-label" for="body">상세 내용<span class="req">*</span></label>
+              <textarea class="textarea" id="body" placeholder="언제, 어디서, 어떤 일이 있었는지 시간순으로 구체적으로 작성해 주세요. (최소 40자)&#10;&#10;예) 2026년 8월 12일 ○○매장에서 결제 후 환불을 요청했으나, 담당자는 &#39;정책상 불가&#39;라며 반복적으로 응대를 거부했습니다."></textarea>
+              <div class="field-help">사실만 기재하고, 추측·비방 표현은 검증에서 반려됩니다. <strong>주민등록번호, 전화번호 등 개인정보는 마스킹해 주세요.</strong></div>
+              <div class="field-error">상세 내용을 40자 이상 입력해 주세요.</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="ev-kind">증거 유형<span class="req">*</span></label>
+              <select class="select" id="ev-kind" style="width:100%">
+                <option value="screenshot">스크린샷 (화면 캡처)</option>
+                <option value="receipt">영수증 · 거래내역</option>
+                <option value="contract">계약서 · 서류</option>
+                <option value="recording">녹취 · 통화기록</option>
+                <option value="message">문자 · 메신저 대화</option>
+                <option value="other">기타 자료</option>
+              </select>
+            </div>
+
+            <div class="field" id="f-evidence">
+              <label class="field-label">증거 파일<span class="req">*</span></label>
+              <div class="upload-zone" id="upload-zone" tabindex="0" role="button" aria-label="증거 파일 업로드">
+                <strong>파일을 드래그하거나 클릭해서 첨부</strong>
+                <span>이미지 · PDF, 파일당 최대 8MB · 최대 6개 · 최소 1건 필요</span>
+                <input type="file" id="file-input" accept="image/*,application/pdf" multiple hidden />
+              </div>
+              <div class="file-list" id="file-list"></div>
+
+              <div style="margin-top:18px">
+                <label class="field-label" for="link-url">추가 출처 링크 (선택)</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap">
+                  <input class="input" id="link-url" type="url" placeholder="https://..." style="flex:1; min-width:220px" />
+                  <input class="input" id="link-cap" placeholder="링크 설명 (예: 해당 게시물)" style="flex:1; min-width:200px" />
+                  <button type="button" class="btn btn-secondary" id="add-link">링크 추가</button>
+                </div>
+              </div>
+              <div class="file-list" id="link-list" style="margin-top:12px"></div>
+              <div class="field-error">증거 파일 또는 출처 링크를 최소 1건 추가해 주세요.</div>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div data-panel="3" class="hidden">
+            <div class="notice notice-warn" style="margin-bottom:22px">
+              <strong>제출 전 확인</strong>
+              허위·조작된 증거로 확인된 제보는 반려되며, 명예훼손에 해당하는 내용은 법적 책임을 질 수 있습니다.
+              아래 내용이 사실과 일치하는지 최종 확인해 주세요.
+            </div>
+
+            <div class="card" style="border-style:dashed; margin-bottom:24px" id="preview"></div>
+
+            <div class="field">
+              <label class="field-label">공개 표시명</label>
+              <div class="check-row">
+                <input type="checkbox" id="anonymous" checked />
+                <label for="anonymous">익명으로 표시합니다 (권장)</label>
+              </div>
+              <input class="input" id="author-name" placeholder="표시명 (익명 해제 시)" maxlength="30" disabled />
+            </div>
+
+            <div class="field" id="f-agree">
+              <div class="check-row">
+                <input type="checkbox" id="agree-1" />
+                <label for="agree-1">작성한 내용이 사실이며, 허위 제보에 따른 책임을 감수합니다.</label>
+              </div>
+              <div class="check-row">
+                <input type="checkbox" id="agree-2" />
+                <label for="agree-2">증거에서 이름·전화번호 등 개인정보를 마스킹했습니다.</label>
+              </div>
+              <div class="field-error">두 항목 모두 동의해야 제출할 수 있습니다.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; justify-content:space-between; margin-top:8px" id="wizard-nav">
+            <button type="button" class="btn btn-ghost" id="btn-prev" disabled>이전</button>
+            <button type="button" class="btn btn-primary" id="btn-next">다음</button>
+            <button type="submit" class="btn btn-primary hidden" id="btn-submit">제보 제출하기</button>
+          </div>
+
+          <div class="progress hidden" id="upload-progress"><div class="progress-bar" id="upload-bar"></div></div>
+          <div class="small muted center hidden" id="upload-status" style="margin-top:8px"></div>
+        </form>
+
+        <!-- SUCCESS -->
+        <div class="card success-box hidden" id="success">
+          <div class="success-icon">✓</div>
+          <h2>제보가 접수되었습니다</h2>
+          <p class="muted">검증 담당자가 증거를 확인한 뒤 공개 여부가 결정됩니다.<br />아래 접수번호로 진행 상황을 확인할 수 있으니 보관해 주세요.</p>
+          <div class="track-link">
+            <span id="track-url" style="flex:1"></span>
+            <button class="btn btn-secondary btn-sm" id="copy-link">복사</button>
+          </div>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+            <a class="btn btn-primary" id="go-detail" href="#">접수 확인하러 가기</a>
+            <a class="btn btn-secondary" href="index.html">목록으로</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <div class="footer-brand"><span class="brand-mark">JJ</span> 좆좆소</div>
+        <p class="footer-note">제보는 증거 확인 후 공개됩니다. 반려 사유는 접수자에게만 안내되며, 반려된 제보는 공개되지 않습니다.</p>
+      </div>
+      <div>
+        <h4>바로가기</h4>
+        <a href="report.html">제보 작성</a>
+        <a href="rules.html">검증 기준</a>
+        <a href="index.html">제보 목록</a>
+      </div>
+      <div>
+        <h4>정책</h4>
+        <a href="rules.html#evidence">증거 기준</a>
+        <a href="rules.html#rebuttal">반론권 정책</a>
+        <a href="rules.html#disclaimer">면책 조항</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© <span id="year"></span> 좆좆소 (JJOKJJOKSO)</div>
+  </footer>
+
+  <script type="module" src="assets/js/report.js"></script>
+</body>
+</html>
