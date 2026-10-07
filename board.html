@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>자유게시판 — 좆좌소</title>
+  <meta name="description" content="제보가 아닌 이야기는 자유게시판에서. 잡담·질문·정보 공유를 가볍게 나누는 좌좌소 커뮤니티입니다." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://jjokjjokso.pages.dev/board" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="좌좌소" />
+  <meta property="og:title" content="자유게시판 — 좌좌소" />
+  <meta property="og:description" content="제보가 아닌 이야기는 자유게시판에서. 잡담·질문·정보 공유를 가볍게 나누는 커뮤니티입니다." />
+  <meta property="og:url" content="https://jjokjjokso.pages.dev/board" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="좌좌소 — 증거로 남기는 기업·매장 제보" />
+  <meta name="twitter:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="google-site-verification" content="90ObN9YY1jH6ZHRfL3tGx5HvKoHC8boT6jdFhbSe80s" />
+  <meta name="naver-site-verification" content="d2a2ac902bd5f6859e33c5c7f0665f99d04b1e31" />
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://jjokjjokso.pages.dev/"},{"@type":"ListItem","position":2,"name":"자유게시판","item":"https://jjokjjokso.pages.dev/board"}]}
+  </script>
+</head>
+<body data-page="board">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JJ</span>
+        <span><span class="brand-name">좌좌소</span><span class="brand-sub">JJOKJJOKSO</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" data-nav="home">제보 목록</a>
+        <a href="rules.html" data-nav="rules">검증 기준</a>
+        <a href="subjects.html" data-nav="subjects">대상 등록</a>
+        <a href="board.html" data-nav="board">자유게시판</a>
+        <a href="admin.html" data-nav="admin">관리자</a>
+        <a href="https://blackconsumer.vercel.app/">블랙컨슈머</a>
+        <a href="report.html" class="btn btn-accent btn-sm" data-nav="report">제보하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container-narrow">
+        <div class="breadcrumbs"><a href="index.html">홈</a> <span>›</span> <span>자유게시판</span></div>
+        <h1>자유게시판</h1>
+        <p>제보가 아닌 이야기는 여기서. 잡담·질문·정보를 가볍게 나누는 공간입니다. 증거가 필요 없는 짧은 글도 환영합니다.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:38px">
+      <div class="container-narrow">
+
+        <!-- 글쓰기 폼 -->
+        <form class="card card-pad" id="board-form" novalidate style="margin-bottom:34px">
+          <h2 style="font-size:19px; margin:0 0 18px">새 글 쓰기</h2>
+
+          <div class="field">
+            <label class="field-label">분류<span class="req">*</span></label>
+            <div class="radio-row">
+              <label class="radio-pill"><input type="radio" name="bcat" value="free" checked /><span>자유</span></label>
+              <label class="radio-pill"><input type="radio" name="bcat" value="qna" /><span>질문</span></label>
+              <label class="radio-pill"><input type="radio" name="bcat" value="info" /><span>정보</span></label>
+              <label class="radio-pill"><input type="radio" name="bcat" value="share" /><span>나눔</span></label>
+            </div>
+          </div>
+
+          <div class="field" id="f-btitle">
+            <label class="field-label" for="b-title">제목<span class="req">*</span></label>
+            <input class="input" id="b-title" placeholder="제목을 입력하세요" maxlength="120" />
+            <div class="field-error">제목을 입력해 주세요.</div>
+          </div>
+
+          <div class="field" id="f-bbody">
+            <label class="field-label" for="b-body">내용<span class="req">*</span></label>
+            <textarea class="textarea" id="b-body" style="min-height:150px" placeholder="무슨 이야기를 나누고 싶으신가요? (1자 이상)"></textarea>
+            <div class="field-error">내용을 입력해 주세요.</div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="b-name">표시명</label>
+            <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
+            <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
+            <span class="small muted">비방·욕설·개인정보가 담긴 글은 <a href="rules.html">운영 원칙</a>에 따라 삭제될 수 있습니다.</span>
+          </div>
+        </form>
+
+        <!-- 검색 + 목록 -->
+        <div class="head-block" style="margin-bottom:16px">
+          <span class="head-index">BOARD</span>
+          <h2>자유게시판 글</h2>
+          <p>카테고리로 필터하거나 검색해서 원하는 이야기를 찾으세요.</p>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px">
+          <div class="tabs" id="cat-tabs">
+            <button class="tab is-active" data-cat="">전체</button>
+            <button class="tab" data-cat="free">자유</button>
+            <button class="tab" data-cat="qna">질문</button>
+            <button class="tab" data-cat="info">정보</button>
+            <button class="tab" data-cat="share">나눔</button>
+          </div>
+          <div class="tabs" id="sort-tabs">
+            <button class="tab is-active" data-sort="latest">최신순</button>
+            <button class="tab" data-sort="hot">인기순</button>
+          </div>
+        </div>
+
+        <div class="search-bar2" style="margin-bottom:20px">
+          <input type="search" id="b-q" placeholder="제목·내용 검색" aria-label="게시글 검색" />
+        </div>
+
+        <div class="post-list" id="board-list">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+
+        <p class="small muted center" id="b-count" style="margin-top:16px"></p>
+        <div class="center" style="margin-top:18px">
+          <button class="btn btn-secondary" id="load-more" hidden>더 많은 글 불러오기</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <div class="footer-brand"><span class="brand-mark">JJ</span> 좌좌소</div>
+        <p class="footer-note">자유게시판은 증거 없는 가벼운 이야기 공간입니다. 제보는 <a href="report.html">제보 작성</a>을 이용해 주세요.</p>
+      </div>
+      <div>
+        <h4>바로가기</h4>
+        <a href="board.html">자유게시판</a>
+        <a href="report.html">제보 작성</a>
+        <a href="subjects.html">대상 등록</a>
+        <a href="rules.html">검증 기준</a>
+        <a href="index.html">제보 목록</a>
+      </div>
+      <div>
+        <h4>정책</h4>
+        <a href="rules.html#evidence">증거 기준</a>
+        <a href="rules.html#rebuttal">반론권 정책</a>
+        <a href="rules.html#disclaimer">면책 조항</a>
+      </div>
+      <div>
+        <h4>관련 사이트</h4>
+        <a href="https://blackconsumer.vercel.app/">블랙컨슈머 (BLACKARCHIVE)</a>
+        <p class="footer-note">이름·연락처·차량번호·인상착의로 검색하는 블랙컨슈머 제보 아카이브</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">© <span id="year"></span> 좌좌소 (JJOKJJOKSO)</div>
+  </footer>
+
+  <script type="module" src="assets/js/board.js"></script>
+</body>
+</html>
