@@ -51,23 +51,12 @@ function renderBody() {
     }
     html += esc(seg);
   }
-  $("#v-body").innerHTML = html;
-  $("#v-body").querySelectorAll("img[data-full]").forEach((im) => {
-    im.addEventListener("click", () => lightbox.open(im.dataset.full, post.title));
-  });
-
   const rest = imgs.map((u, i) => ({ u, i })).filter((x) => !used.has(x.i));
-  renderImages(rest);
-}
-
-function renderImages(rest) {
-  const box = $("#v-images");
-  if (!rest.length) { box.innerHTML = ""; box.hidden = true; return; }
-  box.hidden = false;
-  box.innerHTML = rest.map(({ u, i }) =>
-    `<img src="${esc(u)}" alt="첨부 이미지 ${i + 1}" loading="lazy" style="flex:1 1 260px; width:100%; height:230px; object-fit:contain; background:#F7F3EC; padding:6px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:10px; cursor:zoom-in; display:block" data-full="${esc(u)}" />`
+  const restHtml = rest.map(({ u, i }) =>
+    `<img src="${esc(u)}" alt="첨부 이미지 ${i + 1}" loading="lazy" style="display:block; width:100%; height:400px; object-fit:contain; background:#F7F3EC; padding:8px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:10px; margin:0 0 16px; cursor:zoom-in" data-full="${esc(u)}" />`
   ).join("");
-  box.querySelectorAll("img").forEach((im) => {
+  $("#v-body").innerHTML = restHtml + html;
+  $("#v-body").querySelectorAll("img[data-full]").forEach((im) => {
     im.addEventListener("click", () => lightbox.open(im.dataset.full, post.title));
   });
 }

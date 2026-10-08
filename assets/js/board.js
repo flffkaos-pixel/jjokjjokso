@@ -36,8 +36,8 @@ function rowCard(p) {
       <span class="chip chip-kind">${CAT_LABEL[p.category] || "자유"}</span>
       ${hasImg ? `<span class="chip">📷 사진 ${p.images.length}</span>` : ""}
     </div>
-    <h3 class="post-title">${esc(p.title)}</h3>
     ${thumb}
+    <h3 class="post-title">${esc(p.title)}</h3>
     ${excerpt}
     <div class="post-meta">
       <span>${esc(name)}</span>
