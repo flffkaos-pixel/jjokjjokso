@@ -30,12 +30,38 @@ function notFound(title, desc) {
   if (cf) cf.closest(".card").hidden = true;
 }
 
-function renderImages() {
-  const box = $("#v-images");
+function renderBody() {
+  const body = post.body || "";
   const imgs = post.images || [];
-  if (!imgs.length) { box.innerHTML = ""; box.hidden = true; return; }
+  const used = new Set();
+  let html = "";
+  const segments = body.split(/(\[[1-9]\])/);
+  for (const seg of segments) {
+    const m = /^\[([1-9])\]$/.exec(seg);
+    if (m) {
+      const idx = Number(m[1]) - 1;
+      if (imgs[idx]) {
+        used.add(idx);
+        html += `<img src="${esc(imgs[idx])}" alt="첨부 이미지 ${m[1]}" loading="lazy" style="display:block; width:100%; max-height:430px; object-fit:contain; background:#F7F3EC; border:1.5px solid var(--line); border-radius:10px; margin:16px 0; cursor:zoom-in" data-full="${esc(imgs[idx])}" />`;
+        continue;
+      }
+    }
+    html += esc(seg);
+  }
+  $("#v-body").innerHTML = html;
+  $("#v-body").querySelectorAll("img[data-full]").forEach((im) => {
+    im.addEventListener("click", () => lightbox.open(im.dataset.full, post.title));
+  });
+
+  const rest = imgs.map((u, i) => ({ u, i })).filter((x) => !used.has(x.i));
+  renderImages(rest);
+}
+
+function renderImages(rest) {
+  const box = $("#v-images");
+  if (!rest.length) { box.innerHTML = ""; box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = imgs.map((u, i) =>
+  box.innerHTML = rest.map(({ u, i }) =>
     `<img src="${esc(u)}" alt="첨부 이미지 ${i + 1}" loading="lazy" style="flex:1 1 260px; width:100%; height:230px; object-fit:cover; border:1.5px solid var(--line); border-radius:10px; cursor:zoom-in; display:block" data-full="${esc(u)}" />`
   ).join("");
   box.querySelectorAll("img").forEach((im) => {
@@ -49,8 +75,7 @@ function renderPost() {
   $("#v-title").textContent = post.title;
   $("#v-meta").textContent = `${name} · ${fmtDate(post.created_at, true)} · 조회 ${fmtNum(post.view_count)}`;
   $("#v-top").innerHTML = `<span class="chip chip-kind">${CAT_LABEL[post.category] || "자유"}</span>`;
-  $("#v-body").textContent = post.body;
-  renderImages();
+  renderBody();
   renderLike();
 }
 

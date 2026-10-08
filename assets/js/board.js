@@ -33,7 +33,7 @@ function rowCard(p) {
     </div>
     <h3 class="post-title">${esc(p.title)}</h3>
     ${thumb}
-    <p class="post-excerpt">${esc(p.body)}</p>
+    <p class="post-excerpt">${esc(p.body.replace(/\[[1-9]\]/g, "").trim())}</p>
     <div class="post-meta">
       <span>${esc(name)}</span>
       <span>추천 ${fmtNum(p.like_count)}</span>
