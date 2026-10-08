@@ -1,4 +1,4 @@
--- 좌좌소 "제보 대상" 등록 테이블
+-- 좆좆소 "제보 대상" 등록 테이블
 -- Supabase Dashboard > SQL Editor 에서 이 파일을 1회 실행하세요. (스키마 실행과 별개)
 
 create table if not exists public.subjects (

@@ -28,7 +28,7 @@ function notFound(title, desc) {
 
 function renderPost() {
   const name = post.is_anonymous || !post.author_name ? "익명" : post.author_name;
-  document.title = `${post.title} · 자유게시판 — 좌좌소`;
+  document.title = `${post.title} · 자유게시판 — 좆좆소`;
   $("#v-title").textContent = post.title;
   $("#v-meta").textContent = `${name} · ${fmtDate(post.created_at, true)} · 조회 ${fmtNum(post.view_count)}`;
   $("#v-top").innerHTML = `<span class="chip chip-kind">${CAT_LABEL[post.category] || "자유"}</span>`;
