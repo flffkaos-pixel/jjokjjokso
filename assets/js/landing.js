@@ -47,7 +47,7 @@ function popCard(p, cmap) {
       <span class="small" style="color:var(--muted); margin-left:auto">${fmtDate(p.created_at)}</span>
     </div>
     <h3 class="post-title" style="font-size:16.5px; margin-bottom:8px">${esc(p.title)}</h3>
-    ${p.images && p.images[0] ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:140px; object-fit:cover; border:1.5px solid var(--line); border-radius:9px; margin-bottom:10px; display:block" />` : ""}
+    ${p.images && p.images[0] ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:150px; object-fit:contain; background:#F7F3EC; padding:5px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:9px; margin-bottom:10px; display:block" />` : ""}
     <div class="post-meta">
       <span>${name}</span>
       <span>♥ 추천 ${fmtNum(p.like_count)}</span>

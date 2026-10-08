@@ -23,7 +23,7 @@ const objUrls = [];
 function rowCard(p) {
   const name = p.is_anonymous || !p.author_name ? "익명" : p.author_name;
   const thumb = p.images && p.images[0]
-    ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:150px; object-fit:cover; border:1.5px solid var(--line); border-radius:9px; margin-bottom:12px; display:block" />`
+    ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:170px; object-fit:contain; background:#F7F3EC; padding:6px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:9px; margin-bottom:12px; display:block" />`
     : "";
   return `
   <a class="post-card" href="board-view.html?b=${p.id}">
@@ -107,7 +107,7 @@ function renderPreviews() {
     const url = URL.createObjectURL(f);
     objUrls.push(url);
     return `<div style="position:relative">
-      <img src="${url}" alt="${esc(f.name)}" style="width:76px; height:76px; object-fit:cover; border:1.5px solid var(--line); border-radius:8px; display:block" />
+      <img src="${url}" alt="${esc(f.name)}" style="width:76px; height:76px; object-fit:contain; background:#F7F3EC; padding:3px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:8px; display:block" />
       <button type="button" data-rm="${i}" aria-label="첨부 취소" style="position:absolute; top:-8px; right:-8px; width:21px; height:21px; border-radius:50%; border:1.5px solid var(--ink); background:#fff; font-size:13px; font-weight:800; cursor:pointer; line-height:1; padding:0">×</button>
     </div>`;
   }).join("");

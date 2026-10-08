@@ -359,7 +359,7 @@ code { background: var(--line-soft); padding: 1px 6px; border-radius: 5px; font-
 }
 .evidence-card:hover { transform: translate(-3px, -3px); box-shadow: var(--hard); }
 .evidence-thumb { aspect-ratio: 4/3; background: var(--line-soft); display: grid; place-items: center; overflow: hidden; color: var(--muted-2); border-bottom: 1.5px solid var(--ink); }
-.evidence-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.evidence-thumb img { width: 100%; height: 100%; object-fit: contain; background: #F7F3EC; }
 .evidence-info { padding: 12px 14px; }
 .evidence-kind { font-size: 11.5px; font-weight: 800; color: var(--brand); letter-spacing: .08em; }
 .evidence-cap { font-size: 13.5px; color: var(--ink-2); margin-top: 2px; }
