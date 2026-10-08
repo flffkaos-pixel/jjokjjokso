@@ -266,3 +266,6 @@ drop trigger if exists board_comments_count on public.board_comments;
 create trigger board_comments_count
   after insert or delete on public.board_comments
   for each row execute function public.board_sync_comment_count();
+
+-- 사진 첨부 컬럼 (재실행 안전)
+alter table public.board_posts add column if not exists images text[] not null default '{}';

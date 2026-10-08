@@ -7,6 +7,8 @@ setupPage();
 
 const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
 const PER = 10;
+const MAX_FILES = 3;
+const MAX_SIZE = 5 * 1024 * 1024;
 
 let cat = "";
 let sort = "latest";
@@ -14,16 +16,23 @@ let page = 0;
 let total = 0;
 let loading = false;
 let rows = [];
+let picked = [];
+const objUrls = [];
 
 /* ---------- 렌더 ---------- */
 function rowCard(p) {
   const name = p.is_anonymous || !p.author_name ? "익명" : p.author_name;
+  const thumb = p.images && p.images[0]
+    ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:150px; object-fit:cover; border:1.5px solid var(--line); border-radius:9px; margin-bottom:12px; display:block" />`
+    : "";
   return `
   <a class="post-card" href="board-view.html?b=${p.id}">
     <div class="post-card-top">
       <span class="chip chip-kind">${CAT_LABEL[p.category] || "자유"}</span>
+      ${p.images && p.images.length ? `<span class="chip">📷 사진 ${p.images.length}</span>` : ""}
     </div>
     <h3 class="post-title">${esc(p.title)}</h3>
+    ${thumb}
     <p class="post-excerpt">${esc(p.body)}</p>
     <div class="post-meta">
       <span>${esc(name)}</span>
@@ -88,6 +97,56 @@ async function load(reset = false) {
   }
 }
 
+/* ---------- 사진 선택 ---------- */
+function renderPreviews() {
+  objUrls.forEach((u) => URL.revokeObjectURL(u));
+  objUrls.length = 0;
+  const box = $("#b-previews");
+  box.innerHTML = picked.map((f, i) => {
+    const url = URL.createObjectURL(f);
+    objUrls.push(url);
+    return `<div style="position:relative">
+      <img src="${url}" alt="${esc(f.name)}" style="width:76px; height:76px; object-fit:cover; border:1.5px solid var(--line); border-radius:8px; display:block" />
+      <button type="button" data-rm="${i}" aria-label="첨부 취소" style="position:absolute; top:-8px; right:-8px; width:21px; height:21px; border-radius:50%; border:1.5px solid var(--ink); background:#fff; font-size:13px; font-weight:800; cursor:pointer; line-height:1; padding:0">×</button>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-rm]").forEach((b) => {
+    b.addEventListener("click", () => {
+      picked.splice(Number(b.dataset.rm), 1);
+      renderPreviews();
+    });
+  });
+}
+
+$("#b-files").addEventListener("change", (e) => {
+  const files = [...e.target.files];
+  for (const f of files) {
+    if (!f.type.startsWith("image/")) { toast("이미지 파일만 첨부할 수 있습니다."); continue; }
+    if (f.size > MAX_SIZE) { toast(`"${f.name}"은 5MB를 넘습니다.`); continue; }
+    if (picked.length >= MAX_FILES) { toast("사진은 최대 3장까지 첨부할 수 있습니다."); break; }
+    picked.push(f);
+  }
+  e.target.value = "";
+  renderPreviews();
+});
+
+async function uploadImages() {
+  const urls = [];
+  for (const f of picked) {
+    const extRaw = (f.name.split(".").pop() || "jpg").toLowerCase();
+    const ext = extRaw.replace(/[^a-z0-9]/g, "").slice(0, 8) || "jpg";
+    const path = `board/${crypto.randomUUID()}.${ext}`;
+    const { error } = await db.storage.from("evidence").upload(path, f, {
+      contentType: f.type,
+      upsert: false,
+    });
+    if (error) throw new Error(`사진 업로드 실패: ${error.message}`);
+    const { data } = db.storage.from("evidence").getPublicUrl(path);
+    urls.push(data.publicUrl);
+  }
+  return urls;
+}
+
 /* ---------- 글쓰기 ---------- */
 $("#board-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -104,20 +163,28 @@ $("#board-form").addEventListener("submit", async (e) => {
   if (!isConfigured()) { toast("Supabase 설정(config.js)이 필요합니다."); return; }
 
   const btn = $("#btn-write");
+  const label = btn.textContent;
   btn.disabled = true;
+  btn.textContent = picked.length ? "사진 올리는 중…" : "올리는 중…";
   try {
     const category = $("input[name=bcat]:checked").value;
-    const { data, error } = await db.from("board_posts").insert({
+    const payload = {
       title, body, category,
       author_name: name || null,
       is_anonymous: !name,
-    }).select("id").single();
-    if (error) throw error;
-    toast("글이 올라갔습니다.");
-    $("#b-title").value = "";
-    $("#b-body").value = "";
-    $("#b-name").value = "";
-    location.href = `board-view.html?b=${data.id}`;
+    };
+    if (picked.length) payload.images = await uploadImages();
+
+    let res = await db.from("board_posts").insert(payload).select("id").single();
+    if (res.error && payload.images && /images|column/i.test(res.error.message || "")) {
+      delete payload.images;
+      res = await db.from("board_posts").insert(payload).select("id").single();
+      if (!res.error) toast("글이 올라갔습니다. (사진 컬럼 SQL 미실행으로 사진 없이 등록)");
+    }
+    if (res.error) throw res.error;
+    picked = [];
+    renderPreviews();
+    location.href = `board-view.html?b=${res.data.id}`;
   } catch (err) {
     console.error(err);
     const missing = /does not exist|schema cache/i.test(err.message || "");
@@ -126,6 +193,7 @@ $("#board-form").addEventListener("submit", async (e) => {
       : "글 올리기에 실패했습니다: " + (err.message || "알 수 없는 오류"));
   } finally {
     btn.disabled = false;
+    btn.textContent = label;
   }
 });
 

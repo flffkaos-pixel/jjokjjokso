@@ -56,46 +56,7 @@
     <section class="section" style="padding-top:38px">
       <div class="container-narrow">
 
-        <!-- 글쓰기 폼 -->
-        <div id="write" style="scroll-margin-top:100px">
-          <form class="card card-pad" id="board-form" novalidate style="margin-bottom:34px">
-            <h2 style="font-size:19px; margin:0 0 18px">새 글 쓰기</h2>
-
-            <div class="field">
-              <label class="field-label">분류<span class="req">*</span></label>
-              <div class="radio-row">
-                <label class="radio-pill"><input type="radio" name="bcat" value="free" checked /><span>자유</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="qna" /><span>질문</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="info" /><span>정보</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="share" /><span>나눔</span></label>
-              </div>
-            </div>
-
-            <div class="field" id="f-btitle">
-              <label class="field-label" for="b-title">제목<span class="req">*</span></label>
-              <input class="input" id="b-title" placeholder="제목을 입력하세요" maxlength="120" />
-              <div class="field-error">제목을 입력해 주세요.</div>
-            </div>
-
-            <div class="field" id="f-bbody">
-              <label class="field-label" for="b-body">내용<span class="req">*</span></label>
-              <textarea class="textarea" id="b-body" style="min-height:150px" placeholder="무슨 이야기를 나누고 싶으신가요? (1자 이상)"></textarea>
-              <div class="field-error">내용을 입력해 주세요.</div>
-            </div>
-
-            <div class="field">
-              <label class="field-label" for="b-name">표시명</label>
-              <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
-            </div>
-
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
-              <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
-              <span class="small muted">비방·욕설·개인정보가 담긴 글은 삭제될 수 있습니다.</span>
-            </div>
-          </form>
-        </div>
-
-        <!-- 검색 + 목록 -->
+        <!-- 목록 먼저 -->
         <div class="head-block" style="margin-bottom:16px">
           <span class="head-index">BOARD</span>
           <h2>자유게시판 글</h2>
@@ -129,6 +90,56 @@
         <p class="small muted center" id="b-count" style="margin-top:16px"></p>
         <div class="center" style="margin-top:18px">
           <button class="btn btn-secondary" id="load-more" hidden>더 많은 글 불러오기</button>
+        </div>
+
+        <!-- 글쓰기 폼 (그 아래) -->
+        <div id="write" style="scroll-margin-top:100px; margin-top:46px">
+          <div class="head-block" style="margin-bottom:16px">
+            <span class="head-index">WRITE</span>
+            <h2>새 글 쓰기</h2>
+            <p>하고 싶은 말을 올리세요. 사진도 함께 첨부할 수 있습니다.</p>
+          </div>
+
+          <form class="card card-pad" id="board-form" novalidate>
+            <div class="field">
+              <label class="field-label">분류<span class="req">*</span></label>
+              <div class="radio-row">
+                <label class="radio-pill"><input type="radio" name="bcat" value="free" checked /><span>자유</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="qna" /><span>질문</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="info" /><span>정보</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="share" /><span>나눔</span></label>
+              </div>
+            </div>
+
+            <div class="field" id="f-btitle">
+              <label class="field-label" for="b-title">제목<span class="req">*</span></label>
+              <input class="input" id="b-title" placeholder="제목을 입력하세요" maxlength="120" />
+              <div class="field-error">제목을 입력해 주세요.</div>
+            </div>
+
+            <div class="field" id="f-bbody">
+              <label class="field-label" for="b-body">내용<span class="req">*</span></label>
+              <textarea class="textarea" id="b-body" style="min-height:150px" placeholder="무슨 이야기를 나누고 싶으신가요? (1자 이상)"></textarea>
+              <div class="field-error">내용을 입력해 주세요.</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="b-files">사진 첨부 (선택)</label>
+              <input class="input" type="file" id="b-files" accept="image/*" multiple style="padding:10px 12px" />
+              <div class="field-help">최대 3장 · 장당 5MB 이하. 글 상에서 바로 볼 수 있습니다.</div>
+              <div id="b-previews" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px"></div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="b-name">표시명</label>
+              <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
+              <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
+              <span class="small muted">비방·욕설·개인정보가 담긴 글은 삭제될 수 있습니다.</span>
+            </div>
+          </form>
         </div>
       </div>
     </section>

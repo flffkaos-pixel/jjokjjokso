@@ -1,9 +1,11 @@
 import { db, isConfigured } from "./db.js";
 import {
-  $, $$, esc, toast, setupPage, fmtDate, fmtNum, qs, getVoterKey, emptyBox,
+  $, $$, esc, toast, setupPage, fmtDate, fmtNum, qs, getVoterKey, emptyBox, initLightbox,
 } from "./app.js";
 
 setupPage();
+
+const lightbox = initLightbox();
 
 const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
 const id = qs("b");
@@ -21,9 +23,24 @@ function notFound(title, desc) {
   $("#v-meta").textContent = "";
   $("#v-top").innerHTML = "";
   $("#v-body").innerHTML = emptyBox(title, desc);
+  $("#v-images").innerHTML = "";
+  $("#v-images").hidden = true;
   $("#v-like").hidden = true;
   const cf = $("#comment-form");
   if (cf) cf.closest(".card").hidden = true;
+}
+
+function renderImages() {
+  const box = $("#v-images");
+  const imgs = post.images || [];
+  if (!imgs.length) { box.innerHTML = ""; box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = imgs.map((u, i) =>
+    `<img src="${esc(u)}" alt="첨부 이미지 ${i + 1}" loading="lazy" style="flex:1 1 260px; width:100%; height:230px; object-fit:cover; border:1.5px solid var(--line); border-radius:10px; cursor:zoom-in; display:block" data-full="${esc(u)}" />`
+  ).join("");
+  box.querySelectorAll("img").forEach((im) => {
+    im.addEventListener("click", () => lightbox.open(im.dataset.full, post.title));
+  });
 }
 
 function renderPost() {
@@ -33,6 +50,7 @@ function renderPost() {
   $("#v-meta").textContent = `${name} · ${fmtDate(post.created_at, true)} · 조회 ${fmtNum(post.view_count)}`;
   $("#v-top").innerHTML = `<span class="chip chip-kind">${CAT_LABEL[post.category] || "자유"}</span>`;
   $("#v-body").textContent = post.body;
+  renderImages();
   renderLike();
 }
 
