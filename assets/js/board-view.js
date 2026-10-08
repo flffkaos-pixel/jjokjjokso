@@ -8,6 +8,7 @@ setupPage();
 const lightbox = initLightbox();
 
 const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
+const POST_FIELDS = "id, title, body, category, author_name, is_anonymous, view_count, like_count, comment_count, created_at, updated_at, images";
 const id = qs("b");
 let post = null;
 
@@ -26,6 +27,8 @@ function notFound(title, desc) {
   $("#v-images").innerHTML = "";
   $("#v-images").hidden = true;
   $("#v-like").hidden = true;
+  $("#v-edit").hidden = true;
+  $("#v-del").hidden = true;
   const cf = $("#comment-form");
   if (cf) cf.closest(".card").hidden = true;
 }
@@ -114,7 +117,7 @@ async function loadPost() {
   if (!id) { notFound("주소가 올바르지 않습니다.", "목록에서 글을 선택해 주세요."); return; }
   if (!isConfigured()) { notFound("Supabase 미연결", "config.js 설정이 필요합니다."); return; }
   try {
-    const { data, error } = await db.from("board_posts").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await db.from("board_posts").select(POST_FIELDS).eq("id", id).maybeSingle();
     if (error) throw error;
     if (!data) { notFound("삭제되었거나 잘못된 주소입니다.", "목록에서 다른 글을 확인해 주세요."); return; }
     post = data;
@@ -202,5 +205,116 @@ $("#comment-form").addEventListener("submit", async (e) => {
       : "댓글 등록에 실패했습니다: " + (err.message || "알 수 없는 오류"));
   }
 });
+
+/* ---------- 수정/삭제 (비밀번호) ---------- */
+async function sha256(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+let pendingMode = null;
+let pendingHash = null;
+
+function openPwBox(mode) {
+  if (!post) return;
+  pendingMode = mode;
+  $("#pw-title").textContent = mode === "edit" ? "수정 비밀번호 확인" : "삭제 비밀번호 확인";
+  $("#pw-input").value = "";
+  $("#pw-box").style.display = "grid";
+  $("#pw-input").focus();
+}
+function closePwBox() {
+  $("#pw-box").style.display = "none";
+  $("#pw-input").value = "";
+  pendingMode = null;
+}
+function openEditBox() {
+  $("#e-title").value = post.title;
+  $("#e-body").value = post.body;
+  $("#edit-box").style.display = "grid";
+  $("#v-body").style.display = "none";
+  $("#v-images").hidden = true;
+  $("#e-title").focus();
+}
+
+function pwFailMsg() {
+  return "비밀번호가 다르거나 비밀번호가 설정되지 않은 글입니다.";
+}
+
+$("#v-edit").addEventListener("click", () => openPwBox("edit"));
+$("#v-del").addEventListener("click", () => openPwBox("delete"));
+$("#pw-cancel").addEventListener("click", closePwBox);
+$("#pw-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); $("#pw-ok").click(); }
+});
+
+$("#pw-ok").addEventListener("click", async () => {
+  if (!post || !pendingMode) return;
+  const raw = $("#pw-input").value;
+  if (!raw) { toast("비밀번호를 입력해 주세요."); return; }
+  if (!isConfigured()) { toast("Supabase 설정(config.js)이 필요합니다."); return; }
+
+  const btn = $("#pw-ok");
+  btn.disabled = true;
+  btn.textContent = "확인 중…";
+  try {
+    const h = await sha256(raw);
+    if (pendingMode === "delete") {
+      if (!confirm("정말 삭제할까요? 되돌릴 수 없습니다.")) return;
+      const { data, error } = await db.rpc("board_delete", { p_id: id, p_pass_hash: h });
+      if (error) throw error;
+      if (!data) { toast(pwFailMsg()); return; }
+      toast("삭제되었습니다.");
+      location.href = "board.html";
+    } else {
+      const { data, error } = await db.rpc("board_check", { p_id: id, p_pass_hash: h });
+      if (error) throw error;
+      if (!data) { toast(pwFailMsg()); return; }
+      pendingHash = h;
+      closePwBox();
+      openEditBox();
+    }
+  } catch (err) {
+    console.error(err);
+    const missing = /could not find the function/i.test(err.message || "");
+    toast(missing
+      ? "비밀번호 함수가 없습니다 — supabase/board_password.sql 을 SQL Editor에서 실행해 주세요."
+      : "확인에 실패했습니다: " + (err.message || "알 수 없는 오류"));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "확인";
+  }
+});
+
+$("#e-save").addEventListener("click", async () => {
+  if (!post || !pendingHash) { toast("비밀번호 확인이 필요합니다."); return; }
+  const title = $("#e-title").value.trim();
+  const body = $("#e-body").value.trim();
+  if (!title) { toast("제목을 입력해 주세요."); return; }
+  if (!body) { toast("내용을 입력해 주세요."); return; }
+  if (!isConfigured()) { toast("Supabase 설정(config.js)이 필요합니다."); return; }
+
+  const btn = $("#e-save");
+  btn.disabled = true;
+  btn.textContent = "저장 중…";
+  try {
+    const { data, error } = await db.rpc("board_update", {
+      p_id: id, p_pass_hash: pendingHash, p_title: title, p_body: body,
+    });
+    if (error) throw error;
+    if (!data) { toast(pwFailMsg()); return; }
+    toast("수정되었습니다.");
+    location.reload();
+  } catch (err) {
+    console.error(err);
+    const missing = /could not find the function/i.test(err.message || "");
+    toast(missing
+      ? "비밀번호 함수가 없습니다 — supabase/board_password.sql 을 SQL Editor에서 실행해 주세요."
+      : "저장에 실패했습니다: " + (err.message || "알 수 없는 오류"));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "저장";
+  }
+});
+$("#e-cancel").addEventListener("click", () => location.reload());
 
 loadPost();

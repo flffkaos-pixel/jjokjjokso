@@ -135,6 +135,12 @@
               <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
             </div>
 
+            <div class="field">
+              <label class="field-label" for="b-pass">수정·삭제 비밀번호 (선택)</label>
+              <input class="input" type="password" id="b-pass" placeholder="설정하면 나중에 비밀번호로 수정·삭제할 수 있습니다" maxlength="20" autocomplete="new-password" />
+              <div class="field-help">비워두면 수정·삭제가 불가능합니다. 암호화되어 저장되며 잊어버리면 복구할 수 없으니 기억에 남는 걸로 설정하세요.</div>
+            </div>
+
             <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
               <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
               <span class="small muted">비방·욕설·개인정보가 담긴 글은 삭제될 수 있습니다.</span>

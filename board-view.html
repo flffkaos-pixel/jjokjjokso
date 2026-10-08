@@ -60,7 +60,27 @@
             <button class="btn btn-secondary btn-sm" id="v-like">추천 <span id="v-like-count">0</span></button>
             <span class="small muted">댓글 <span id="v-comment-count">0</span></span>
             <span style="flex:1"></span>
+            <button class="btn btn-ghost btn-sm" id="v-edit">수정</button>
+            <button class="btn btn-ghost btn-sm" id="v-del">삭제</button>
             <a class="btn btn-ghost btn-sm" href="board.html">← 목록으로</a>
+          </div>
+
+          <div id="pw-box" style="display:none; margin-top:16px; padding:14px; border:1.5px dashed var(--line); border-radius:10px; gap:10px">
+            <strong style="font-size:14.5px" id="pw-title">비밀번호 확인</strong>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+              <input class="input" type="password" id="pw-input" maxlength="20" placeholder="글쓰기 때 설정한 비밀번호" autocomplete="current-password" style="flex:1; min-width:170px" />
+              <button class="btn btn-primary btn-sm" id="pw-ok">확인</button>
+              <button class="btn btn-ghost btn-sm" id="pw-cancel">취소</button>
+            </div>
+          </div>
+
+          <div id="edit-box" style="display:none; margin-top:16px; gap:10px">
+            <input class="input" id="e-title" maxlength="120" placeholder="제목" />
+            <textarea class="textarea" id="e-body" style="min-height:220px" placeholder="내용"></textarea>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-primary btn-sm" id="e-save">저장</button>
+              <button class="btn btn-ghost btn-sm" id="e-cancel">취소</button>
+            </div>
           </div>
         </div>
 

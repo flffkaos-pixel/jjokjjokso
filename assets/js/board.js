@@ -71,7 +71,8 @@ async function load(reset = false) {
   loading = true;
   try {
     const term = $("#b-q").value.trim().replace(/[%_,()]/g, " ").trim();
-    let query = db.from("board_posts").select("*", { count: "exact" });
+    let query = db.from("board_posts")
+      .select("id, title, body, category, author_name, is_anonymous, view_count, like_count, comment_count, created_at, images", { count: "exact" });
     if (cat) query = query.eq("category", cat);
     if (term) query = query.or(`title.ilike.%${term}%,body.ilike.%${term}%`);
     query = sort === "hot"
@@ -148,6 +149,11 @@ async function uploadImages() {
 }
 
 /* ---------- 글쓰기 ---------- */
+async function sha256(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 $("#board-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = $("#b-title").value.trim();
@@ -173,6 +179,8 @@ $("#board-form").addEventListener("submit", async (e) => {
       author_name: name || null,
       is_anonymous: !name,
     };
+    const pass = $("#b-pass").value.trim();
+    if (pass) payload.password_hash = await sha256(pass);
     if (picked.length) payload.images = await uploadImages();
 
     let res = await db.from("board_posts").insert(payload).select("id").single();
