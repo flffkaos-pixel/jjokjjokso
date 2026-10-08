@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>자유게시판 — 좆좆소</title>
-  <meta name="description" content="증거 없이 편하게. 잡담·질문·정보를 나누는 좆좆소 자유게시판입니다." />
+  <title>좆좆소 — 가볍게 쓰는 자유게시판</title>
+  <meta name="description" content="가입도, 증거도 필요 없는 좆좆소 자유게시판. 잡담·질문·정보를 가볍게 나누는 커뮤니티입니다." />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
@@ -12,23 +12,23 @@
   <link rel="canonical" href="https://jjokjjokso.pages.dev/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="좆좆소" />
-  <meta property="og:title" content="자유게시판 — 좆좆소" />
-  <meta property="og:description" content="증거 없이 편하게. 잡담·질문·정보를 나누는 좆좆소 자유게시판입니다." />
+  <meta property="og:title" content="좆좆소 — 가볍게 쓰는 자유게시판" />
+  <meta property="og:description" content="가입도, 증거도 필요 없는 자유게시판. 잡담·질문·정보를 가볍게 나누는 커뮤니티입니다." />
   <meta property="og:url" content="https://jjokjjokso.pages.dev/" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="좆좆소 자유게시판" />
+  <meta property="og:image:alt" content="좆좆소 — 가볍게 쓰는 자유게시판" />
   <meta name="twitter:image" content="https://jjokjjokso.pages.dev/assets/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="google-site-verification" content="90ObN9YY1jH6ZHRfL3tGx5HvKoHC8boT6jdFhbSe80s" />
   <meta name="naver-site-verification" content="d2a2ac902bd5f6859e33c5c7f0665f99d04b1e31" />
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"좆좆소","url":"https://jjokjjokso.pages.dev/","description":"증거 없이 편하게. 잡담·질문·정보를 나누는 좆좆소 자유게시판입니다."}
+{"@context":"https://schema.org","@type":"WebSite","name":"좆좆소","url":"https://jjokjjokso.pages.dev/","description":"가입도, 증거도 필요 없는 좆좆소 자유게시판. 잡담·질문·정보를 가볍게 나누는 커뮤니티입니다."}
   </script>
 </head>
-<body data-page="board">
+<body data-page="home">
 
   <header class="site-header">
     <div class="container">
@@ -37,97 +37,112 @@
         <span><span class="brand-name">좆좆소</span><span class="brand-sub">JJOKJJOKSO</span></span>
       </a>
       <nav class="nav-links">
-        <a href="index.html" data-nav="board">자유게시판</a>
+        <a href="board.html" data-nav="board">자유게시판</a>
         <a href="https://blackconsumer.vercel.app/">블랙컨슈머</a>
-        <a href="index.html#write" class="btn btn-accent btn-sm">글쓰기</a>
+        <a href="board.html#write" class="btn btn-accent btn-sm">글쓰기</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="page-head">
-      <div class="container-narrow">
-        <h1>자유게시판</h1>
-        <p>증거 없이 편하게. 잡담·질문·정보를 나누는 공간입니다. 부담 없이 첫 글을 올려 보세요.</p>
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="hero-kicker"><span class="pulse"></span> FREE BOARD · 익명 가능</div>
+          <h1>가입도 증거도 필요 없는<br /><em>자유게시판</em></h1>
+          <p class="hero-lead">
+            잡담, 질문, 정보, 나눔 — 하고 싶은 말을 올리면 됩니다.
+            익명도 가능하고, 추천과 댓글로 가볍게 대화하세요.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-accent btn-lg" href="board.html">자유게시판 들어가기</a>
+            <a class="btn btn-line-dark btn-lg" href="board.html#write">글 쓰기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <span>가입 없음</span><b>●</b>
+          <span>익명 가능</span><b>●</b>
+          <span>증거 불필요</span><b>●</b>
+          <span>자유 · 질문 · 정보 · 나눔</span><b>●</b>
+          <span>추천과 댓글</span><b>●</b>
+          <span>그냥 올리면 끝</span><b>●</b>
+          <span>가입 없음</span><b>●</b>
+          <span>익명 가능</span><b>●</b>
+          <span>증거 불필요</span><b>●</b>
+          <span>자유 · 질문 · 정보 · 나눔</span><b>●</b>
+          <span>추천과 댓글</span><b>●</b>
+          <span>그냥 올리면 끝</span><b>●</b>
+        </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top:38px">
-      <div class="container-narrow">
+    <!-- ============ STATS ============ -->
+    <section class="stats-band">
+      <div class="container stats-grid">
+        <div class="stat2"><div class="stat2-num" id="stat-posts">—</div><div class="stat2-label">쓴 글</div></div>
+        <div class="stat2"><div class="stat2-num" id="stat-comments">—</div><div class="stat2-label">댓글</div></div>
+        <div class="stat2"><div class="stat2-num">4</div><div class="stat2-label">분류</div></div>
+        <div class="stat2"><div class="stat2-num">0</div><div class="stat2-label">회원가입</div></div>
+      </div>
+    </section>
 
-        <!-- 글쓰기 폼 -->
-        <div id="write" style="scroll-margin-top:100px">
-          <form class="card card-pad" id="board-form" novalidate style="margin-bottom:34px">
-            <h2 style="font-size:19px; margin:0 0 18px">새 글 쓰기</h2>
-
-            <div class="field">
-              <label class="field-label">분류<span class="req">*</span></label>
-              <div class="radio-row">
-                <label class="radio-pill"><input type="radio" name="bcat" value="free" checked /><span>자유</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="qna" /><span>질문</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="info" /><span>정보</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="share" /><span>나눔</span></label>
-              </div>
-            </div>
-
-            <div class="field" id="f-btitle">
-              <label class="field-label" for="b-title">제목<span class="req">*</span></label>
-              <input class="input" id="b-title" placeholder="제목을 입력하세요" maxlength="120" />
-              <div class="field-error">제목을 입력해 주세요.</div>
-            </div>
-
-            <div class="field" id="f-bbody">
-              <label class="field-label" for="b-body">내용<span class="req">*</span></label>
-              <textarea class="textarea" id="b-body" style="min-height:150px" placeholder="무슨 이야기를 나누고 싶으신가요? (1자 이상)"></textarea>
-              <div class="field-error">내용을 입력해 주세요.</div>
-            </div>
-
-            <div class="field">
-              <label class="field-label" for="b-name">표시명</label>
-              <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
-            </div>
-
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
-              <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
-              <span class="small muted">비방·욕설·개인정보가 담긴 글은 삭제될 수 있습니다.</span>
-            </div>
-          </form>
+    <!-- ============ FEATURES ============ -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="head-block">
+          <span class="head-index">01</span>
+          <h2>이렇게 씁니다</h2>
+          <p>특별한 규칙은 없습니다. 편하게 올리고, 가볍게 대화하세요.</p>
         </div>
 
-        <!-- 검색 + 목록 -->
-        <div class="head-block" style="margin-bottom:16px">
-          <span class="head-index">BOARD</span>
-          <h2>자유게시판 글</h2>
-          <p>카테고리로 필터하거나 검색해서 원하는 이야기를 찾으세요.</p>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>
+            </div>
+            <h3>익명은 기본</h3>
+            <p>표시명은 선택 사항입니다. 비워두면 익명으로 올라가고, 쓰고 싶을 때만 이름을 적으면 됩니다.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4.5"/></svg>
+            </div>
+            <h3>증거 없어도 됩니다</h3>
+            <p>여기는 제보가 아니라 이야기하는 곳. 한 줄이어도, 짧아도 괜찮습니다. 그냥 올리면 끝입니다.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+            </div>
+            <h3>가볍게 찾기</h3>
+            <p>자유·질문·정보·나눔 4개 분류와 검색, 최신순·인기순 정렬로 원하는 이야기를 바로 찾을 수 있습니다.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 7a4 4 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
+            </div>
+            <h3>반응은 추천과 댓글</h3>
+            <p>마음에 들면 추천을, 이어 말하고 싶으면 댓글을. 브라우저당 추천 1회, 나머지는 자유롭게.</p>
+          </article>
         </div>
+      </div>
+    </section>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px">
-          <div class="tabs" id="cat-tabs">
-            <button class="tab is-active" data-cat="">전체</button>
-            <button class="tab" data-cat="free">자유</button>
-            <button class="tab" data-cat="qna">질문</button>
-            <button class="tab" data-cat="info">정보</button>
-            <button class="tab" data-cat="share">나눔</button>
-          </div>
-          <div class="tabs" id="sort-tabs">
-            <button class="tab is-active" data-sort="latest">최신순</button>
-            <button class="tab" data-sort="hot">인기순</button>
-          </div>
+    <!-- ============ CTA ============ -->
+    <section class="cta-band">
+      <div class="container cta-inner">
+        <div>
+          <div class="cta-kicker">JUST WRITE IT</div>
+          <h2>하고 싶은 말,<br />지금 올려보세요</h2>
+          <p>첫 글이 제일 쉽습니다.</p>
         </div>
-
-        <div class="search-bar2" style="margin-bottom:20px">
-          <input type="search" id="b-q" placeholder="제목·내용 검색" aria-label="게시글 검색" />
-        </div>
-
-        <div class="post-list" id="board-list">
-          <div class="skeleton"></div>
-          <div class="skeleton"></div>
-          <div class="skeleton"></div>
-        </div>
-
-        <p class="small muted center" id="b-count" style="margin-top:16px"></p>
-        <div class="center" style="margin-top:18px">
-          <button class="btn btn-secondary" id="load-more" hidden>더 많은 글 불러오기</button>
+        <div class="cta-actions">
+          <a class="btn btn-accent btn-lg" href="board.html#write">글 쓰기</a>
+          <a class="btn btn-line-dark btn-lg" href="board.html">둘러보기</a>
         </div>
       </div>
     </section>
@@ -141,8 +156,8 @@
       </div>
       <div>
         <h4>바로가기</h4>
-        <a href="index.html#write">글 쓰기</a>
-        <a href="index.html">자유게시판</a>
+        <a href="board.html">자유게시판</a>
+        <a href="board.html#write">글 쓰기</a>
       </div>
       <div>
         <h4>관련 사이트</h4>
@@ -153,6 +168,6 @@
     <div class="container footer-bottom">© <span id="year"></span> 좆좆소 (JJOKJJOKSO)</div>
   </footer>
 
-  <script type="module" src="assets/js/board.js"></script>
+  <script type="module" src="assets/js/landing.js"></script>
 </body>
 </html>
