@@ -22,18 +22,23 @@ const objUrls = [];
 /* ---------- 렌더 ---------- */
 function rowCard(p) {
   const name = p.is_anonymous || !p.author_name ? "익명" : p.author_name;
-  const thumb = p.images && p.images[0]
+  const hasImg = !!(p.images && p.images.length);
+  const thumb = hasImg
     ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:170px; object-fit:contain; background:#F7F3EC; padding:6px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:9px; margin-bottom:12px; display:block" />`
     : "";
+  const text = p.body.replace(/\[[1-9]\]/g, "").trim();
+  const excerpt = hasImg
+    ? ""
+    : `<p class="post-excerpt">${esc(text.length > 70 ? text.slice(0, 70) + "…" : text)}</p>`;
   return `
   <a class="post-card" href="board-view.html?b=${p.id}">
     <div class="post-card-top">
       <span class="chip chip-kind">${CAT_LABEL[p.category] || "자유"}</span>
-      ${p.images && p.images.length ? `<span class="chip">📷 사진 ${p.images.length}</span>` : ""}
+      ${hasImg ? `<span class="chip">📷 사진 ${p.images.length}</span>` : ""}
     </div>
     <h3 class="post-title">${esc(p.title)}</h3>
     ${thumb}
-    <p class="post-excerpt">${esc(p.body.replace(/\[[1-9]\]/g, "").trim())}</p>
+    ${excerpt}
     <div class="post-meta">
       <span>${esc(name)}</span>
       <span>추천 ${fmtNum(p.like_count)}</span>
