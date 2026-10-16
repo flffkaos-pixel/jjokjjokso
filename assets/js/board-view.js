@@ -79,7 +79,14 @@ function renderLike() {
   btn.innerHTML = `${liked ? "추천 취소" : "추천"} <span id="v-like-count">${fmtNum(post.like_count)}</span>`;
 }
 
+/* ---------- 댓글 좋아요 상태(로컬) ---------- */
+function ckLikedIds() {
+  try { return JSON.parse(localStorage.getItem("bck_likes") || "[]"); } catch { return []; }
+}
+function ckSave(ids) { localStorage.setItem("bck_likes", JSON.stringify(ids)); }
+
 function renderComments(items) {
+  const liked = ckLikedIds();
   $("#v-cm-n").textContent = `(${fmtNum(items.length)})`;
   const cc = $("#v-comment-count");
   if (cc) cc.textContent = fmtNum(items.length);
@@ -90,12 +97,16 @@ function renderComments(items) {
   }
   wrap.innerHTML = items.map((c) => {
     const name = c.author_name || "익명";
+    const isL = liked.includes(c.id);
     return `
     <div class="comment">
       <div class="comment-avatar">${esc(name.slice(0, 1))}</div>
       <div class="comment-body">
         <div><span class="comment-name">${esc(name)}</span><span class="comment-time">${fmtDate(c.created_at, true)}</span></div>
         <p class="comment-text">${esc(c.body)}</p>
+        <div style="margin-top:2px">
+          <button class="btn btn-sm ${isL ? "btn-primary" : "btn-ghost"}" data-cl="${c.id}" style="font-size:13px; padding:3px 12px">♥ 추천 <span>${fmtNum(c.like_count || 0)}</span></button>
+        </div>
       </div>
     </div>`;
   }).join("");
@@ -131,7 +142,7 @@ async function loadPost() {
 async function loadComments() {
   try {
     const { data } = await db.from("board_comments")
-      .select("id, body, author_name, created_at")
+      .select("id, body, author_name, created_at, like_count")
       .eq("post_id", id)
       .order("created_at", { ascending: true });
     renderComments(data || []);
@@ -305,5 +316,36 @@ $("#e-save").addEventListener("click", async () => {
   }
 });
 $("#e-cancel").addEventListener("click", () => location.reload());
+
+/* ---------- 댓글 추천 ---------- */
+$("#v-comments").addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-cl]");
+  if (!btn) return;
+  if (!isConfigured()) { toast("Supabase 설정(config.js)이 필요합니다."); return; }
+  const cid = btn.dataset.cl;
+  btn.disabled = true;
+  try {
+    const { data, error } = await db.rpc("board_comment_like", { p_id: cid, p_voter: getVoterKey() });
+    if (error) throw error;
+    const span = btn.querySelector("span");
+    let n = parseInt(String(span.textContent || "0").replace(/[^\d]/g, ""), 10) || 0;
+    n = data ? n + 1 : Math.max(0, n - 1);
+    span.textContent = fmtNum(n);
+    const ids = ckLikedIds();
+    const i = ids.indexOf(cid);
+    if (data) { if (i < 0) ids.push(cid); } else if (i >= 0) { ids.splice(i, 1); }
+    ckSave(ids);
+    btn.classList.toggle("btn-primary", !!data);
+    btn.classList.toggle("btn-ghost", !data);
+  } catch (err) {
+    console.error(err);
+    const missing = /could not find the function/i.test(err.message || "");
+    toast(missing
+      ? "댓글 추천 함수가 없습니다 — supabase/board_comment_like.sql 을 SQL Editor에서 실행해 주세요."
+      : "댓글 추천에 실패했습니다: " + (err.message || "알 수 없는 오류"));
+  } finally {
+    btn.disabled = false;
+  }
+});
 
 loadPost();
