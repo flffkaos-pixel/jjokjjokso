@@ -29,8 +29,8 @@ function notFound(title, desc) {
   $("#v-like").hidden = true;
   $("#v-edit").hidden = true;
   $("#v-del").hidden = true;
-  const cf = $("#comment-form");
-  if (cf) cf.closest(".card").hidden = true;
+  const cs = $("#comment-section");
+  if (cs) cs.hidden = true;
 }
 
 function renderBody() {
