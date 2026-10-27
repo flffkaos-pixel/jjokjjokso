@@ -19,26 +19,7 @@ async function loadStats() {
   }
 }
 
-function commentBlock(p, comments) {
-  const shown = (comments || []).slice(0, 2);
-  let html = `<div style="margin-top:10px; padding-top:9px; border-top:1.5px dashed var(--line); display:grid; gap:6px">`;
-  if (!shown.length) {
-    html += `<span class="small" style="color:var(--muted-2)">아직 댓글이 없습니다</span>`;
-  } else {
-    for (const c of shown) {
-      const name = c.author_name || "익명";
-      const body = c.body.length > 64 ? c.body.slice(0, 64) + "…" : c.body;
-      html += `<span class="small" style="color:var(--ink-2); line-height:1.5"><b>${esc(name)}</b> <span style="color:var(--muted)">· ${fmtDate(c.created_at)}</span><br />${esc(body)}</span>`;
-    }
-    const rest = (p.comment_count || 0) - shown.length;
-    if (rest > 0) {
-      html += `<span class="small" style="color:var(--accent); font-weight:800">+${fmtNum(rest)}개 댓글 더</span>`;
-    }
-  }
-  return html + `</div>`;
-}
-
-function popCard(p, cmap) {
+function popCard(p) {
   const name = p.is_anonymous || !p.author_name ? "익명" : esc(p.author_name);
   return `
   <a class="post-card" href="board-view.html?b=${p.id}">
@@ -54,7 +35,6 @@ function popCard(p, cmap) {
       <span>◉ 조회 ${fmtNum(p.view_count)}</span>
       ${p.comment_count ? `<span>댓글 ${fmtNum(p.comment_count)}</span>` : ""}
     </div>
-    ${commentBlock(p, cmap[p.id] || [])}
   </a>`;
 }
 
@@ -86,22 +66,10 @@ async function loadPopular() {
 
     const L = likes.data || [];
     const V = views.data || [];
-    const ids = [...new Set([...L, ...V].map((p) => p.id))];
-    const cmap = {};
-    if (ids.length) {
-      const { data: cms, error: cErr } = await db.from("board_comments")
-        .select("post_id, body, author_name, created_at")
-        .in("post_id", ids)
-        .order("created_at", { ascending: false });
-      if (cErr) throw cErr;
-      (cms || []).forEach((c) => {
-        (cmap[c.post_id] = cmap[c.post_id] || []).push(c);
-      });
-    }
 
     const empty = emptyBox("아직 글이 없습니다", "첫 글을 올려 보세요.");
-    likesBox.innerHTML = L.length ? L.map((p) => popCard(p, cmap)).join("") : empty;
-    viewsBox.innerHTML = V.length ? V.map((p) => popCard(p, cmap)).join("") : empty;
+    likesBox.innerHTML = L.length ? L.map((p) => popCard(p)).join("") : empty;
+    viewsBox.innerHTML = V.length ? V.map((p) => popCard(p)).join("") : empty;
   } catch (err) {
     console.error(err);
     const missing = /does not exist|schema cache/i.test(err.message || "");
