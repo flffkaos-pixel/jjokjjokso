@@ -21,6 +21,8 @@ async function loadStats() {
 
 function popCard(p) {
   const name = p.is_anonymous || !p.author_name ? "익명" : esc(p.author_name);
+  const text = (p.body || "").replace(/\[[1-9]\]/g, "").replace(/\s+/g, " ").trim();
+  const short = text.length > 60 ? text.slice(0, 60) + "…" : text;
   return `
   <a class="post-card" href="board-view.html?b=${p.id}">
     <div class="post-card-top">
@@ -29,6 +31,7 @@ function popCard(p) {
     </div>
     <h3 class="post-title" style="font-size:16.5px; margin-bottom:8px">${esc(p.title)}</h3>
     ${p.images && p.images[0] ? `<img src="${esc(p.images[0])}" alt="" loading="lazy" style="width:100%; height:150px; object-fit:contain; background:#F7F3EC; padding:5px; box-sizing:border-box; border:1.5px solid var(--line); border-radius:9px; margin-bottom:10px; display:block" />` : ""}
+    ${short ? `<p class="small" style="color:var(--muted-2); margin:0 0 10px; line-height:1.6">${esc(short)}</p>` : ""}
     <div class="post-meta">
       <span>${name}</span>
       <span>♥ 추천 ${fmtNum(p.like_count)}</span>
@@ -50,7 +53,7 @@ async function loadPopular() {
   }
 
   try {
-    const fields = "id, title, category, like_count, view_count, comment_count, created_at, author_name, is_anonymous, images";
+    const fields = "id, title, body, category, like_count, view_count, comment_count, created_at, author_name, is_anonymous, images";
     const [likes, views] = await Promise.all([
       db.from("board_posts").select(fields)
         .order("like_count", { ascending: false })
