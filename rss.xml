@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>좆좆소 — 가볍게 쓰는 자유게시판</title>
+    <link>https://jjokjjokso.pages.dev/</link>
+    <description>가입도, 증거도 필요 없는 좆좆소 자유게시판. 잡담·질문·정보를 가볍게 나누는 커뮤니티입니다.</description>
+    <language>ko</language>
+    <copyright>© 좆좆소 (JJOKJJOKSO)</copyright>
+    <lastBuildDate>Mon, 02 Nov 2026 09:00:00 +0900</lastBuildDate>
+    <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+    <generator>JJOKJJOKSO</generator>
+    <item>
+      <title>좆좆소 자유게시판</title>
+      <link>https://jjokjjokso.pages.dev/board</link>
+      <description>잡담·질문·정보·나눔, 사진도 올릴 수 있는 자유게시판입니다.</description>
+      <guid>https://jjokjjokso.pages.dev/board</guid>
+      <pubDate>Mon, 02 Nov 2026 09:00:00 +0900</pubDate>
+    </item>
+    <item>
+      <title>좆좆소 — 홈</title>
+      <link>https://jjokjjokso.pages.dev/</link>
+      <description>좆좆소 자유게시판 커뮤니티 메인 페이지입니다.</description>
+      <guid>https://jjokjjokso.pages.dev/</guid>
+      <pubDate>Mon, 02 Nov 2026 09:00:00 +0900</pubDate>
+    </item>
+  </channel>
+</rss>
