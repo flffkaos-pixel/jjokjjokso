@@ -163,6 +163,10 @@ export function setupPage() {
   $$("[data-nav]").forEach((a) => {
     if (a.dataset.nav === page) a.classList.add("is-active");
   });
+
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }
 }
 
 /* ---------- 목록 로딩 공통 ---------- */
