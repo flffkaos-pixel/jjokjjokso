@@ -88,8 +88,9 @@ create table if not exists public.board_posts (
   id uuid primary key default gen_random_uuid(),
   title text not null check (char_length(btrim(title)) between 1 and 120),
   body text not null check (char_length(btrim(body)) between 1 and 5000),
-  category text not null default 'free'
-    check (category in ('free', 'qna', 'info', 'share')),
+  category text not null default 'etc'
+    check (category in ('manu', 'store', 'drive', 'office', 'build', 'etc')),
+  region text,
   author_name text check (author_name is null or char_length(author_name) between 1 and 20),
   is_anonymous boolean not null default true,
   view_count integer not null default 0,
@@ -134,7 +135,7 @@ create policy "board_posts_insert" on public.board_posts
   with check (
     char_length(btrim(title)) between 1 and 120
     and char_length(btrim(body)) between 1 and 5000
-    and category in ('free', 'qna', 'info', 'share')
+    and category in ('manu', 'store', 'drive', 'office', 'build', 'etc')
     and view_count = 0 and like_count = 0 and comment_count = 0
   );
 
@@ -382,6 +383,17 @@ update public.board_posts set category = 'etc' where category in ('free', 'qna',
 
 -- 지역 컬럼 (선택)
 alter table public.board_posts add column if not exists region text;
+
+-- 등록 정책도 업종 체크로 교체 (본문이 구버전이어도 자가복구)
+drop policy if exists "board_posts_insert" on public.board_posts;
+create policy "board_posts_insert" on public.board_posts
+  for insert to anon, authenticated
+  with check (
+    char_length(btrim(title)) between 1 and 120
+    and char_length(btrim(body)) between 1 and 5000
+    and category in ('manu', 'store', 'drive', 'office', 'build', 'etc')
+    and view_count = 0 and like_count = 0 and comment_count = 0
+  );
 
 -- 열 권한 재정의 (region 포함 — password_hash 제외 유지)
 revoke select on public.board_posts from anon, authenticated;
