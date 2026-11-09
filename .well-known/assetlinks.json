@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "kr.jjokjjokso.app",
+    "sha256_cert_fingerprints": [
+      "PWABuilder가_생성한_AAB의_서명인증서_SHA256값을_여기에_입력하세요_형식:AB:CD:EF:12:34:...(PLAY_STORE_GUIDE.md 3단계 참고)"
+    ]
+  }
+}]

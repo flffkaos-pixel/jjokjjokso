@@ -106,8 +106,9 @@ function renderComments(items) {
       <div class="comment-body">
         <div><span class="comment-name">${esc(name)}</span><span class="comment-time">${fmtDate(c.created_at, true)}</span></div>
         <p class="comment-text">${esc(c.body)}</p>
-        <div style="margin-top:2px">
+        <div style="margin-top:2px; display:flex; gap:8px; flex-wrap:wrap">
           <button class="btn btn-sm ${isL ? "btn-primary" : "btn-ghost"}" data-cl="${c.id}" style="font-size:13px; padding:3px 12px">♥ 추천 <span>${fmtNum(c.like_count || 0)}</span></button>
+          <button class="btn btn-ghost btn-sm" data-rp-cm="${c.id}" style="font-size:12.5px; padding:3px 10px">신고</button>
         </div>
       </div>
     </div>`;
@@ -348,6 +349,54 @@ $("#v-comments").addEventListener("click", async (e) => {
   } finally {
     btn.disabled = false;
   }
+});
+
+/* ---------- 신고 ---------- */
+let rpTarget = null;
+
+function openReport(type, targetId) {
+  rpTarget = { type, id: targetId };
+  $("#rp-title").textContent = type === "post" ? "이 글 신고" : "이 댓글 신고";
+  $("#rp-detail").value = "";
+  $("#report-box").style.display = "grid";
+  $("#report-box").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+$("#v-report").addEventListener("click", () => {
+  if (!post) return;
+  openReport("post", id);
+});
+$("#rp-cancel").addEventListener("click", () => {
+  $("#report-box").style.display = "none";
+  rpTarget = null;
+});
+$("#rp-ok").addEventListener("click", async () => {
+  if (!rpTarget) return;
+  if (!isConfigured()) { toast("Supabase 설정(config.js)이 필요합니다."); return; }
+  const preset = ($("input[name=rp]:checked") || {}).value || "기타";
+  const detail = $("#rp-detail").value.trim();
+  const reason = detail ? `${preset} — ${detail}`.slice(0, 300) : preset;
+  const btn = $("#rp-ok");
+  btn.disabled = true;
+  try {
+    const { error } = await db.from("board_reports").insert({
+      target_type: rpTarget.type,
+      target_id: rpTarget.id,
+      reason,
+    });
+    if (error) throw error;
+    toast("신고가 접수되었습니다. 검토 후 처리됩니다.");
+    $("#report-box").style.display = "none";
+    rpTarget = null;
+  } catch (err) {
+    console.error(err);
+    toast("신고 접수에 실패했습니다: " + (err.message || "알 수 없는 오류"));
+  } finally {
+    btn.disabled = false;
+  }
+});
+$("#v-comments").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-rp-cm]");
+  if (b) openReport("comment", b.dataset.rpCm);
 });
 
 loadPost();

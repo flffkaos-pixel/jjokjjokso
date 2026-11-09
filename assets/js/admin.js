@@ -25,6 +25,7 @@ function enter(session) {
   $("#me-email").textContent = session.user.email || "";
   loadQueue();
   loadRebuttalQueue();
+  loadReports();
 }
 
 $("#login-form").addEventListener("submit", async (e) => {
@@ -234,6 +235,66 @@ async function loadRebuttalQueue() {
       if (e) return toast("처리 실패");
       toast("반론이 반려되었습니다.");
       loadRebuttalQueue();
+    }));
+}
+
+/* ---------- 게시판 신고 ---------- */
+async function loadReports() {
+  const box = $("#report-queue");
+  if (!box) return;
+  const { data: reps, error } = await db.from("board_reports")
+    .select("id, target_type, target_id, reason, created_at")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false })
+    .limit(20);
+  if (error) { box.innerHTML = '<p class="muted small">신고 불러오기 실패</p>'; return; }
+  if (!reps.length) { box.innerHTML = '<p class="muted small" style="margin-top:8px">대기 중인 신고가 없습니다.</p>'; return; }
+
+  box.innerHTML = "";
+  for (const r of reps) {
+    let preview = "(미리보기 실패)";
+    let link = "";
+    try {
+      if (r.target_type === "post") {
+        const { data } = await db.from("board_posts").select("id, title, body").eq("id", r.target_id).maybeSingle();
+        preview = data ? `[글] ${data.title} — ${String(data.body || "").slice(0, 60)}` : "[글] 이미 삭제됨";
+        if (data) link = `board-view.html?b=${data.id}`;
+      } else {
+        const { data } = await db.from("board_comments").select("id, post_id, body").eq("id", r.target_id).maybeSingle();
+        preview = data ? `[댓글] ${String(data.body || "").slice(0, 60)}` : "[댓글] 이미 삭제됨";
+        if (data) link = `board-view.html?b=${data.post_id}`;
+      }
+    } catch { /* preview fallback */ }
+
+    const item = document.createElement("div");
+    item.className = "file-item";
+    item.style.cssText = "flex-direction:column; align-items:stretch; gap:8px; margin-top:10px";
+    item.innerHTML = `
+      <div class="file-name">${esc(r.reason)} <span class="muted small">· ${fmtDate(r.created_at, true)}</span></div>
+      <div class="file-size" style="white-space:normal">${esc(preview)}</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        ${link ? `<a class="btn btn-ghost btn-sm" href="${link}" target="_blank" rel="noopener">열기</a>` : ""}
+        <button class="btn btn-danger btn-sm" data-rp-del="${r.id}" data-tt="${r.target_type}" data-ti="${r.target_id}">대상 삭제</button>
+        <button class="btn btn-secondary btn-sm" data-rp-done="${r.id}">해결 처리</button>
+      </div>`;
+    box.appendChild(item);
+  }
+
+  box.querySelectorAll("[data-rp-del]").forEach((b) =>
+    b.addEventListener("click", async () => {
+      const table = b.dataset.tt === "post" ? "board_posts" : "board_comments";
+      const { error: e1 } = await db.from(table).delete().eq("id", b.dataset.ti);
+      if (e1) return toast("삭제 실패: " + (e1.message || ""));
+      await db.from("board_reports").update({ status: "resolved" }).eq("id", b.dataset.rpDel);
+      toast("대상이 삭제·해결 처리되었습니다.");
+      loadReports();
+    }));
+  box.querySelectorAll("[data-rp-done]").forEach((b) =>
+    b.addEventListener("click", async () => {
+      const { error: e2 } = await db.from("board_reports").update({ status: "resolved" }).eq("id", b.dataset.rpDone);
+      if (e2) return toast("처리 실패");
+      toast("해결 처리되었습니다.");
+      loadReports();
     }));
 }
 

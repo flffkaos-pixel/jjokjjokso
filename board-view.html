@@ -65,6 +65,7 @@
             <span style="flex:1"></span>
             <button class="btn btn-ghost btn-sm" id="v-edit">수정</button>
             <button class="btn btn-ghost btn-sm" id="v-del">삭제</button>
+            <button class="btn btn-ghost btn-sm" id="v-report">신고</button>
             <a class="btn btn-ghost btn-sm" href="board.html">← 목록으로</a>
           </div>
 
@@ -83,6 +84,22 @@
             <div style="display:flex; gap:8px">
               <button class="btn btn-primary btn-sm" id="e-save">저장</button>
               <button class="btn btn-ghost btn-sm" id="e-cancel">취소</button>
+            </div>
+          </div>
+
+          <div id="report-box" style="display:none; margin-top:16px; padding:14px; border:1.5px dashed var(--line); border-radius:10px; gap:10px">
+            <strong style="font-size:14.5px" id="rp-title">신고</strong>
+            <div class="radio-row" style="flex-wrap:wrap">
+              <label class="radio-pill"><input type="radio" name="rp" value="스팸·광고" checked /><span>스팸·광고</span></label>
+              <label class="radio-pill"><input type="radio" name="rp" value="욕설·비방" /><span>욕설·비방</span></label>
+              <label class="radio-pill"><input type="radio" name="rp" value="개인정보 노출" /><span>개인정보 노출</span></label>
+              <label class="radio-pill"><input type="radio" name="rp" value="회사명·실명 언급" /><span>회사명·실명 언급</span></label>
+              <label class="radio-pill"><input type="radio" name="rp" value="기타" /><span>기타</span></label>
+            </div>
+            <textarea class="textarea" id="rp-detail" style="min-height:56px" placeholder="상세 사유 (선택)"></textarea>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-primary btn-sm" id="rp-ok">신고 접수</button>
+              <button class="btn btn-ghost btn-sm" id="rp-cancel">취소</button>
             </div>
           </div>
 
