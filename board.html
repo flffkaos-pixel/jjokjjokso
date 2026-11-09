@@ -50,7 +50,7 @@
       <div class="container-narrow">
         <div class="breadcrumbs"><a href="index.html">홈</a> <span>›</span> <span>자유게시판</span></div>
         <h1>자유게시판</h1>
-        <p>증거 없이 편하게. 잡담·질문·정보를 나누는 공간입니다. 부담 없이 첫 글을 올려 보세요.</p>
+        <p>회사를 특정하지 않고 편하게. 중소 직장인·알바의 이야기를 나누는 공간입니다. 부담 없이 첫 글을 올려 보세요.</p>
       </div>
     </section>
 
@@ -67,10 +67,12 @@
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px">
           <div class="tabs" id="cat-tabs">
             <button class="tab is-active" data-cat="">전체</button>
-            <button class="tab" data-cat="free">자유</button>
-            <button class="tab" data-cat="qna">질문</button>
-            <button class="tab" data-cat="info">정보</button>
-            <button class="tab" data-cat="share">나눔</button>
+            <button class="tab" data-cat="office">사무·서비스</button>
+            <button class="tab" data-cat="manu">제조</button>
+            <button class="tab" data-cat="store">요식·매장</button>
+            <button class="tab" data-cat="drive">배달·운전</button>
+            <button class="tab" data-cat="build">건설</button>
+            <button class="tab" data-cat="etc">기타</button>
           </div>
           <div class="tabs" id="sort-tabs">
             <button class="tab is-active" data-sort="latest">최신순</button>
@@ -103,13 +105,28 @@
 
           <form class="card card-pad" id="board-form" novalidate>
             <div class="field">
-              <label class="field-label">분류<span class="req">*</span></label>
+              <label class="field-label">업종<span class="req">*</span></label>
               <div class="radio-row">
-                <label class="radio-pill"><input type="radio" name="bcat" value="free" checked /><span>자유</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="qna" /><span>질문</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="info" /><span>정보</span></label>
-                <label class="radio-pill"><input type="radio" name="bcat" value="share" /><span>나눔</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="office" checked /><span>사무·서비스</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="manu" /><span>제조</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="store" /><span>요식·매장</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="drive" /><span>배달·운전</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="build" /><span>건설</span></label>
+                <label class="radio-pill"><input type="radio" name="bcat" value="etc" /><span>기타</span></label>
               </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="b-region">지역 (선택)</label>
+              <select class="input" id="b-region">
+                <option value="">비공개</option>
+                <option value="metro">수도권</option>
+                <option value="chung">충청</option>
+                <option value="honam">호남</option>
+                <option value="yeongnam">영남</option>
+                <option value="gangwon">강원·제주</option>
+              </select>
+              <div class="field-help">지역만 표시되며 회사·사업장은 절대 특정되지 않습니다.</div>
             </div>
 
             <div class="field" id="f-btitle">
@@ -132,8 +149,8 @@
             </div>
 
             <div class="field">
-              <label class="field-label" for="b-name">표시명</label>
-              <input class="input" id="b-name" placeholder="비워두면 익명으로 올라갑니다" maxlength="20" />
+              <label class="field-label">표시명</label>
+              <div class="field-help" style="margin-top:0">입력하지 않습니다 — 제출 시 <b>무작위 별명</b>(예: 카페인 중독 사무직 #3021)이 자동으로 붙어 회사·사람이 특정되지 않습니다.</div>
             </div>
 
             <div class="field">
@@ -144,7 +161,7 @@
 
             <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px">
               <button class="btn btn-primary" type="submit" id="btn-write">글 올리기</button>
-              <span class="small muted">비방·욕설·개인정보가 담긴 글은 삭제될 수 있습니다.</span>
+              <span class="small muted"><b>회사명·상호·실명 언급 글은 삭제됩니다.</b> 비방·욕설·개인정보 담긴 글도 삭제될 수 있습니다.</span>
             </div>
           </form>
         </div>

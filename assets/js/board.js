@@ -5,7 +5,14 @@ import {
 
 setupPage();
 
-const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
+const CAT_LABEL = { manu: "제조", store: "요식·매장", drive: "배달·운전", office: "사무·서비스", build: "건설", etc: "기타" };
+const MOODS = ["피곤한", "카페인 중독", "야근에 지친", "퇴사를 꿈꾸는", "월급을 지키는", "점심이 희망인", "출근길이 긴", "주말만 사는", "복지를 꿈꾸는", "오늘 하루만 사는", "잔소리에 지친", "커피로 버티는"];
+const JOBS = { manu: "생산직", store: "매장 직원", drive: "배달·운전기사", office: "사무직", build: "건설 현장", etc: "중소 직장인" };
+function autoName(cat) {
+  const m = MOODS[Math.floor(Math.random() * MOODS.length)];
+  const n = Math.floor(1000 + Math.random() * 9000);
+  return `${m} ${JOBS[cat] || "중소 직장인"} #${n}`;
+}
 const PER = 10;
 const MAX_FILES = 3;
 const MAX_SIZE = 5 * 1024 * 1024;
@@ -77,7 +84,7 @@ async function load(reset = false) {
   try {
     const term = $("#b-q").value.trim().replace(/[%_,()]/g, " ").trim();
     let query = db.from("board_posts")
-      .select("id, title, body, category, author_name, is_anonymous, view_count, like_count, comment_count, created_at, images", { count: "exact" });
+      .select("id, title, body, category, region, author_name, is_anonymous, view_count, like_count, comment_count, created_at, images", { count: "exact" });
     if (cat) query = query.eq("category", cat);
     if (term) query = query.or(`title.ilike.%${term}%,body.ilike.%${term}%`);
     query = sort === "hot"
@@ -163,7 +170,6 @@ $("#board-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = $("#b-title").value.trim();
   const body = $("#b-body").value.trim();
-  const name = $("#b-name").value.trim();
 
   const tOk = title.length >= 1;
   const bOk = body.length >= 1;
@@ -181,8 +187,9 @@ $("#board-form").addEventListener("submit", async (e) => {
     const category = $("input[name=bcat]:checked").value;
     const payload = {
       title, body, category,
-      author_name: name || null,
-      is_anonymous: !name,
+      region: $("#b-region").value || null,
+      author_name: autoName(category),
+      is_anonymous: false,
     };
     const pass = $("#b-pass").value.trim();
     if (pass) payload.password_hash = await sha256(pass);

@@ -369,3 +369,21 @@ begin
 end; $$;
 
 grant execute on function public.board_comment_like(uuid, text) to anon, authenticated;
+
+-- ========== 중소 직장인 커뮤니티 (재실행 안전) ==========
+
+-- 기존 카테고리 → 기타 마이그레이션
+update public.board_posts set category = 'etc' where category in ('free', 'qna', 'info', 'share');
+
+-- 지역 컬럼 (선택)
+alter table public.board_posts add column if not exists region text;
+
+-- 업종 체크 교체
+alter table public.board_posts drop constraint if exists board_posts_category_check;
+alter table public.board_posts add constraint board_posts_category_check
+  check (category in ('manu', 'store', 'drive', 'office', 'build', 'etc'));
+
+-- 열 권한 재정의 (region 포함 — password_hash 제외 유지)
+revoke select on public.board_posts from anon, authenticated;
+grant select (id, title, body, category, region, author_name, is_anonymous, view_count, like_count, comment_count, created_at, updated_at, images)
+  on public.board_posts to anon, authenticated;

@@ -3,7 +3,7 @@ import { $, fmtNum, fmtDate, esc, emptyBox, setupPage } from "./app.js";
 
 setupPage();
 
-const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
+const CAT_LABEL = { manu: "제조", store: "요식·매장", drive: "배달·운전", office: "사무·서비스", build: "건설", etc: "기타" };
 
 async function loadStats() {
   if (!isConfigured()) return;

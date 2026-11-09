@@ -7,8 +7,9 @@ setupPage();
 
 const lightbox = initLightbox();
 
-const CAT_LABEL = { free: "자유", qna: "질문", info: "정보", share: "나눔" };
-const POST_FIELDS = "id, title, body, category, author_name, is_anonymous, view_count, like_count, comment_count, created_at, updated_at, images";
+const CAT_LABEL = { manu: "제조", store: "요식·매장", drive: "배달·운전", office: "사무·서비스", build: "건설", etc: "기타" };
+const REGION_LABEL = { metro: "수도권", chung: "충청", honam: "호남", yeongnam: "영남", gangwon: "강원·제주" };
+const POST_FIELDS = "id, title, body, category, region, author_name, is_anonymous, view_count, like_count, comment_count, created_at, updated_at, images";
 const id = qs("b");
 let post = null;
 
@@ -63,9 +64,10 @@ function renderBody() {
 
 function renderPost() {
   const name = post.is_anonymous || !post.author_name ? "익명" : post.author_name;
+  const region = REGION_LABEL[post.region] || "";
   document.title = `${post.title} · 자유게시판 — 좆좆소`;
   $("#v-title").textContent = post.title;
-  $("#v-meta").textContent = `${name} · ${fmtDate(post.created_at, true)} · 조회 ${fmtNum(post.view_count)}`;
+  $("#v-meta").textContent = `${name}${region ? " · " + region : ""} · ${fmtDate(post.created_at, true)} · 조회 ${fmtNum(post.view_count)}`;
   $("#v-top").innerHTML = `<span class="chip chip-kind">${CAT_LABEL[post.category] || "자유"}</span>`;
   renderBody();
   renderLike();
