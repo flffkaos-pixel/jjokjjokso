@@ -1,15 +1,1 @@
-﻿# OS
-Thumbs.db
-Desktop.ini
-.DS_Store
-
-# 편집기
-.vscode/
-.idea/
-
-# 임시/로그
-*.log
-*.tmp
-
-# wrangler 로컬 캐시
-.wrangler/
+﻿node_modules/
